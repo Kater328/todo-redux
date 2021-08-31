@@ -4,10 +4,10 @@ export const ACTION_CREATE = "CREATE";
 export const ACTION_TOGGLE_TODO = "TOGGLE TODO";
 export const ACTION_DESTROY_TODO = "DESTROY TODO";
 export const ACTION_CHANGE_TITLE = "CHANGE TODO TITLE";
+export const ACTION_CHANGE_FILTER = "CHANGE FILTER";
+export const ACTION_DESTROY_COMPLETED = "DESTROY COMPLETED";
 // export const ACTION_TOGGLE_ALL = "DECREMENT";
-// export const ACTION_DESTROY_COMPLETED = "ADD";
 // export const ACTION_UPDATE_CHECKED_ALL = "ADD";
-// export const ACTION_CHANGE_FILTER = "ADD";
 
 const initialState = {
     todos: [],
@@ -49,6 +49,14 @@ const reducer = (state = initialState, {type, payload}) => {
                       {...item, title: payload.value} :
                       item
                 )
+            };        
+        case ACTION_CHANGE_FILTER:
+            return {...state, 
+                selectedFilter: payload
+            };        
+        case ACTION_DESTROY_COMPLETED:
+            return {...state, 
+                todos: state.todos.filter(item => !item.completed)
             };
         default: 
             return state;

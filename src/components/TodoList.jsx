@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { toggleTodo, destroyTodo, changeTodoTitle } from "../store/actions";
 import TodoItem from "./TodoItem";
 import ToggleCheckbox from "./ToggleCheckbox";
+import { Filter } from "../utils/Enums";
 
 class TodoList extends React.PureComponent {
 
@@ -13,10 +14,21 @@ class TodoList extends React.PureComponent {
                 item={item} 
                 toggleTodo={this.props.toggleTodo}
                 destroyTodo={this.props.destroyTodo}
-                // toggleAll={this.props.toggleAll}
                 changeTodoTitle={this.props.changeTodoTitle}
                 />
         );
+    }
+
+    activateSelectedFilter = (todos) => {
+        if (this.props.selectedFilter === Filter.all) {
+            return (todos.map(item => this.createTodoItem(item)))
+        } else if (this.props.selectedFilter === Filter.active) {
+            return (todos.map( item => !item.completed ?
+                this.createTodoItem(item) :'' ))          
+        }else {
+            return (todos.map( item => item.completed ?
+                this.createTodoItem(item) :'' )) 
+        }
     }
 
     render() {
@@ -29,7 +41,7 @@ class TodoList extends React.PureComponent {
                 <label htmlFor="toggle-all">Mark all as complete</label>
 				<ul className="todo-list">
                     {
-                        this.props.todos.map(item => this.createTodoItem(item))
+                        this.activateSelectedFilter(this.props.todos)
                     }
                 </ul>
 			</section>
@@ -38,7 +50,10 @@ class TodoList extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    return { todos: state.todos };
+    return { 
+        todos: state.todos,
+        selectedFilter: state.selectedFilter 
+    };
 }
 
 const mapDispatchToProps = {
