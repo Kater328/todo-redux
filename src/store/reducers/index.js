@@ -6,8 +6,7 @@ export const ACTION_DESTROY_TODO = "DESTROY TODO";
 export const ACTION_CHANGE_TITLE = "CHANGE TODO TITLE";
 export const ACTION_CHANGE_FILTER = "CHANGE FILTER";
 export const ACTION_DESTROY_COMPLETED = "DESTROY COMPLETED";
-// export const ACTION_TOGGLE_ALL = "DECREMENT";
-// export const ACTION_UPDATE_CHECKED_ALL = "ADD";
+export const ACTION_TOGGLE_ALL = "TOGGLE ALL";
 
 const initialState = {
     todos: [],
@@ -29,7 +28,7 @@ const reducer = (state = initialState, {type, payload}) => {
                 ]
             };
         case ACTION_TOGGLE_TODO:
-            return {...state, 
+            let newState = {...state, 
                 todos: state.todos.map(
                     item =>
                       item.id === payload ?
@@ -37,6 +36,10 @@ const reducer = (state = initialState, {type, payload}) => {
                       item
                 )
             };
+            let newCheckedAll = updateCheckedAll(newState.todos);
+            return {...newState,
+                checkedAll: newCheckedAll
+            }; 
         case ACTION_DESTROY_TODO:
             return {...state, 
                 todos: state.todos.filter(item => item.id !== payload)
@@ -56,11 +59,24 @@ const reducer = (state = initialState, {type, payload}) => {
             };        
         case ACTION_DESTROY_COMPLETED:
             return {...state, 
-                todos: state.todos.filter(item => !item.completed)
+                todos: state.todos.filter(item => !item.completed),
+                checkedAll: false
+            };        
+        case ACTION_TOGGLE_ALL:
+            return {...state, 
+                todos: state.todos.map(
+                    item => ({...item, completed: !state.checkedAll})
+                ),
+                checkedAll: !state.checkedAll
             };
         default: 
             return state;
     }
+}
+
+const updateCheckedAll = (todos) => {
+    if(todos.every(item => item.completed)) return true;
+    return false;
 }
 
 export default reducer;

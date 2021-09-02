@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { toggleTodo, destroyTodo, changeTodoTitle } from "../store/actions";
+import { toggleTodo, destroyTodo, changeTodoTitle, toggleAll } from "../store/actions";
 import TodoItem from "./TodoItem";
 import ToggleCheckbox from "./ToggleCheckbox";
 import { Filter } from "../utils/Enums";
@@ -35,9 +35,9 @@ class TodoList extends React.PureComponent {
         return(
             <section className="main" style={{display: "block"}}>
                 <ToggleCheckbox 
-                    // toggleAll={this.props.toggleAll} 
-                    // checked={this.props.checkedAll}
-                    />
+                    toggleAll={this.props.toggleAll} 
+                    checked={this.props.checkedAll}
+                />
                 <label htmlFor="toggle-all">Mark all as complete</label>
 				<ul className="todo-list">
                     {
@@ -52,14 +52,16 @@ class TodoList extends React.PureComponent {
 const mapStateToProps = (state) => {
     return { 
         todos: state.todos,
-        selectedFilter: state.selectedFilter 
+        selectedFilter: state.selectedFilter,
+        checkedAll: state.checkedAll
     };
 }
 
 const mapDispatchToProps = {
     toggleTodo,
     destroyTodo,
-    changeTodoTitle
+    changeTodoTitle,
+    toggleAll
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

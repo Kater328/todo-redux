@@ -7,9 +7,9 @@ class ToggleCheckbox extends React.Component {
                 id="toggle-all" 
                 className="toggle-all" 
                 type="checkbox"
-                // checked={this.props.checked}
-                // onChange={this.props.toggleAll}
-                />
+                checked={this.props.checked}
+                onChange={this.props.toggleAll}
+            />
         );
     }
 }

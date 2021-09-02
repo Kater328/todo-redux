@@ -18,7 +18,12 @@ class Footer extends React.Component {
     render() {
         return (
             <footer className="footer" display="block;">
-            <span className="todo-count"><strong>{this.props.todos.length}</strong> items left</span>
+            <span 
+                className="todo-count">
+                    <strong>
+                        {(this.props.todos.filter(item => !item.completed)).length}
+                    </strong> items left
+            </span>
             <ul className="filters">
                 {
                     this.filterConfig.map(
